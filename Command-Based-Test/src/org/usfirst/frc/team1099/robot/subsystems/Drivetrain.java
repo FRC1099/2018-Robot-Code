@@ -74,11 +74,11 @@ public class Drivetrain extends Subsystem {
     	updateDashboard();
     }
     
-    public double getLeftEncoder() {
+    public int getLeftEncoder() {
     	return leftDrive.getSelectedSensorPosition(0);
     }
     
-    public double getRightEncoder() {
+    public int getRightEncoder() {
     	return rightDrive.getSelectedSensorPosition(0);
     }
     

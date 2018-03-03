@@ -10,9 +10,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class AutoForward extends Command {
 
-	private double position;
-	private double leftPos;
-	private double rightPos;
+	private int position;
+	
+	private int leftStartPos;
+	private int leftTarget;
 	
     public AutoForward() {
         // Use requires() here to declare subsystem dependencies
@@ -25,13 +26,14 @@ public class AutoForward extends Command {
         // eg. requires(chassis);
     	requires(Robot.drivetrain);
     	
-    	this.position = AutoConfig.kTicksPerInch * distance;
-    	SmartDashboard.putNumber("Stop Ticks", position);
+    	this.position = (int)(AutoConfig.kTicksPerInch * distance);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.drivetrain.resetEncoders();
+    	
+    	leftStartPos = Robot.drivetrain.getLeftEncoder();
+    	leftTarget = leftStartPos + position;
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -39,7 +41,7 @@ public class AutoForward extends Command {
     	double leftPos = Robot.drivetrain.getLeftEncoder();
     	double rightPos = Robot.drivetrain.getRightEncoder();
     	
-    	double lVelocity = .25;
+    	double lVelocity = AutoConfig.kForwardVoltage;
     	double rVelocity = lVelocity;
     	
     	if (leftPos > rightPos) {
@@ -52,7 +54,6 @@ public class AutoForward extends Command {
     	
     	
     	// velocity units are ticks per 100ms?
-
     	Robot.drivetrain.vDrive(lVelocity, rVelocity);
     	
     }
@@ -65,7 +66,7 @@ public class AutoForward extends Command {
     	double leftPos = Robot.drivetrain.getLeftEncoder();
     	
     	// assume forward motion
-        return leftPos > position; 
+        return leftPos > leftTarget; 
     }
 
     // Called once after isFinished returns true

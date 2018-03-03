@@ -7,5 +7,7 @@ public class AutoConfig {
 	public static final int kTicksPerDegree = 92;
 	
 	public static final int kThreshold = 250;
+	
+	public static final double kForwardVoltage = .25;
 		
 }
